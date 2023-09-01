@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# read all mp4 files except 'output.mp4' sorted by name and merge them into 'output.mp4'
+ffmpeg -f concat -safe 0 -i <(for f in *.mp4; do [[ $f = output.mp4 ]] || echo "file '$PWD/$f'"; done | sort) -c copy output.mp4

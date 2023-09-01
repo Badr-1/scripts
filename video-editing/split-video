@@ -1,0 +1,7 @@
+#!/bin/bash
+
+video=$(echo $1 | cut -f 1 -d '.')
+echo $video
+
+ffmpeg -i "$video.mp4" -vn -c:v copy "$video-audio.wav"
+ffmpeg -i "$video.mp4" -an -c:v copy "$video-no-audio.mp4"

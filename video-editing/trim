@@ -1,0 +1,46 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: trim [video name] -s [from where]"
+  echo "       trim [video name] -e [to where]"
+  echo "       trim [video name] [from where] [to where]"
+}
+
+if [ "$#" -eq 0 ]; then
+  usage
+  exit 1
+fi
+
+video_name=$1
+start_time=""
+end_time=""
+output_file="outputFile.mp4"
+
+echo "trim $1 $2 $3"
+
+if [ "$#" -eq 3 ] && [ "$2" == "-s" ]; then
+  start_time=$3
+elif [ "$#" -eq 3 ] && [ "$2" == "-e" ]; then
+  end_time=$3
+elif [ "$#" -eq 3 ]; then
+  start_time=$2
+  end_time=$3
+fi
+
+ffmpeg_cmd="ffmpeg"
+
+if [ -n "$start_time" ]; then
+  echo "start time: $start_time"
+  ffmpeg_cmd+=" -ss $start_time"
+fi
+
+if [ -n "$end_time" ]; then
+  echo "end time: $end_time"
+  ffmpeg_cmd+=" -t $end_time"
+fi
+
+ffmpeg_cmd+=" -i $video_name -async 1 -vcodec copy -acodec copy $output_file"
+
+echo $ffmpeg_cmd
+
+eval "$ffmpeg_cmd"

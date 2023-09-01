@@ -1,0 +1,4 @@
+#!/bin/bash
+
+videoname=$(basename --suffix=.mp4 $1)
+ffmpeg -i "$videoname.mp4" -i $2 -c:v copy -c:a aac "$videoname-youtube.mp4"

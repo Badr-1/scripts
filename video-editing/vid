@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# get command
+cmd=$1
+
+# trim
+if [ "$cmd" == "trim" ]; then
+    echo "trim"
+    shift
+    trim $@
+elif [ "$cmd" == "merge" ]; then
+    echo "merge"
+    shift
+    merge $@
+elif [ "$cmd" == "split" ]; then
+    echo "split"
+    shift
+    split-video $@
+elif [ "$cmd" == "volume" ]; then
+    echo "volume"
+    shift
+    volume $@
+elif [ "$cmd" == "join" ]; then
+    echo "join"
+    shift
+    join $@
+else
+    echo "Usage: video trim|merge|split|volume"
+fi
