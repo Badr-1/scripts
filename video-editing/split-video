@@ -5,3 +5,7 @@ echo $video
 
 ffmpeg -i "$video.mp4" -vn -c:v copy "$video-audio.wav"
 ffmpeg -i "$video.mp4" -an -c:v copy "$video-no-audio.mp4"
+read -p "Delete input? [y/N] " -n 1 -r
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+        rm "$video.mp4"
+fi
