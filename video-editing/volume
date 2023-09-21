@@ -4,7 +4,7 @@ if [[ $# -lt 2 ]]; then
 	echo "Usage: volume video [volume-value]"
 	exit 1
 fi
-name=$(basename --suffix=".mp4" $1)
+name="${1%.*}"
+ext="${1##*.}"
 
-# ffmpeg -i $1 -filter:a "volume=$2" "$2-$1"
-ffmpeg -i "$name.mp4" -filter:a "volume=$2" "$name-$2.mp4"
+ffmpeg -i $name.$ext -af "volume=$2" output.$ext
