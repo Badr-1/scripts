@@ -1,4 +1,37 @@
 #!/bin/bash
 
+#!/bin/bash
+
+# Function to add two timestamps in "hh:mm:ss" format
+add_timestamps() {
+    # Convert the timestamps to seconds
+    t1=$(date -u -d "$1" +"%s")
+    t2=$(date -u -d "$2" +"%s")
+
+    # Add the timestamps
+    t3=$((t1 + t2))
+
+    # Convert the sum to "hh:mm:ss" format
+    echo $(date -u -d "0 $t3 seconds" +"%H:%M:%S")
+}
+
+
 # read all mp4 files except 'output.mp4' sorted by name and merge them into 'output.mp4'
 ffmpeg -f concat -safe 0 -i <(for f in *.mp4; do [[ $f = output.mp4 ]] || echo "file '$PWD/$f'"; done | sort) -c copy output.mp4
+
+rm timestamp
+old_duration="00:00:00"
+duration="00:00:00"
+for video in *.mp4; do
+	if [[ $video != output.mp4 ]];then
+	ffprobe $video &> output
+	cat output
+	video=$(echo $video | cut -d '-' -f2 | cut -d '.' -f1)
+	timestamp=$(add_timestamps $old_duration $duration)
+	duration=$(grep 'Duration' output | cut -d ',' -f1 | cut -d ' ' -f4)
+	duration=$(echo $duration | cut -d '.' -f1)
+	echo "$timestamp $video" >> timestamp
+	old_duration=$timestamp
+	rm output	
+fi
+done
