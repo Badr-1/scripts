@@ -11,10 +11,11 @@ if [ "$#" -eq 0 ]; then
   exit 1
 fi
 
-video_name=$1
+video_name=$(basename $1)
 start_time=""
 end_time=""
-output_file="outputFile.mp4"
+read -p "output name (default: trimmed-$video_name): " output_file
+output_file=${output_file:-"trimmed-$video_name"}
 
 echo "trim $1 $2 $3"
 
